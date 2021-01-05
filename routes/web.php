@@ -22,6 +22,8 @@ Route::namespace('\App\Http\Controllers')->group(function () {
     Route::post('/series/{id}/editaNome', 'SeriesController@editaNome');
 
     Route::get('/series/{serieId}/temporadas', 'TemporadasController@index');
+    Route::get('/temporadas/{temporada}/episodios', 'EpisodiosController@index');
+    Route::post('/temporadas/{temporada}/episodios/assistir', 'EpisodiosController@assistir');
 });
 
 Route::get('/', function () {

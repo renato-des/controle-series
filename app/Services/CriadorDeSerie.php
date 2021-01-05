@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Serie;
+use App\Models\Serie;
 use Illuminate\Support\Facades\DB;
 
 class CriadorDeSerie
