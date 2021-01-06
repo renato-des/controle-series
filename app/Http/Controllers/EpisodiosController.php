@@ -8,11 +8,12 @@ use Illuminate\Http\Request;
 
 class EpisodiosController extends Controller
 {
-    public function index(Temporada $temporada)
+    public function index(Temporada $temporada, Request $request)
     {
         $episodios = $temporada->episodios;
         $temporadaId = $temporada->id;
-        // dd($episodios);
+        //$mensagem = $request->session()->get('mensagem');
+        // return view('episodios.index', compact('episodios', 'temporadaId', 'mensagem'));
         return view('episodios.index', compact('episodios', 'temporadaId'));
     }
 

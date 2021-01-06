@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CriarTabelaSeries extends Migration
+class AdicionaColunaAssistido extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CriarTabelaSeries extends Migration
      */
     public function up()
     {
-        Schema::create('series', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('nome');
+        Schema::table('episodios', function (Blueprint $table) {
+            $table->boolean('assistido')
+                ->nullable();
         });
     }
 
@@ -26,6 +26,8 @@ class CriarTabelaSeries extends Migration
      */
     public function down()
     {
-        Schema::drop('series');
+        Schema::table('episodios', function (Blueprint $table) {
+            $table->dropColumn('assistido');
+        });
     }
 }
