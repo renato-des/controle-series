@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Serie;
+use App\Models\Serie;
 use Illuminate\Http\Request;
 
 class TemporadasController extends Controller
