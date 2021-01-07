@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class Temporada extends Model
 {
+
     protected $fillable = ['numero'];
     public $timestamps = false;
 
