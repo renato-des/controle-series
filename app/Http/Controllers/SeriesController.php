@@ -7,19 +7,10 @@ use App\Http\Requests\SeriesFormRequest;
 use App\Services\CriadorDeSerie;
 use App\Services\RemovedorDeSerie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SeriesController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index(Request $request)
     {
         $series = Serie::query()
@@ -67,8 +58,8 @@ class SeriesController extends Controller
 
     public function editaNome(int $id, Request $request)
     {
-        $novoNome = $request->nome;
         $serie = Serie::find($id);
+        $novoNome = $request->nome;
         $serie->nome = $novoNome;
         $serie->save();
     }
