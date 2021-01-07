@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -54,3 +55,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/visualizando-email', function () {
+
+    $email = new \App\Mail\NovaSerie('Arrow', 3, 2);
+    $user = (object) [
+        'email' => 'renato.t.vieira@caixa.gov.br',
+        'from' => 'renato.t.vieira@caixa.gov.br',
+        'name' => 'Renato T P Vieira'
+    ];
+    Mail::to($user)->send($email);
+    return 'Enviado';
+});
