@@ -2,24 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Episodio, Serie, Temporada};
-use App\Http\Requests\SeriesFormRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
 use App\Services\CriadorDeSerie;
 use App\Services\RemovedorDeSerie;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\SeriesFormRequest;
+use App\Models\{Episodio, Serie, Temporada};
 
 class SeriesController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index(Request $request)
     {
         $series = Serie::query()
@@ -45,6 +38,23 @@ class SeriesController extends Controller
             $request->ep_por_temporada
         );
 
+        $users = User::all();
+        foreach ($users as $indice => $user) {
+            $multiplicador = $indice + 1;
+            $email = new \App\Mail\NovaSerie(
+                $request->nome,
+                $request->qtd_temporadas,
+                $request->ep_por_temporada
+            );
+            $email->subject = 'Nova Série Adicionada';
+            $quando = now()->addSecond($multiplicador * 10);
+            \Illuminate\Support\Facades\Mail::to($user)->later(
+                $quando,
+                $email
+            );
+            //sleep(5);
+        }
+
         $request->session()
             ->flash(
                 'mensagem',
@@ -67,8 +77,8 @@ class SeriesController extends Controller
 
     public function editaNome(int $id, Request $request)
     {
-        $novoNome = $request->nome;
         $serie = Serie::find($id);
+        $novoNome = $request->nome;
         $serie->nome = $novoNome;
         $serie->save();
     }
