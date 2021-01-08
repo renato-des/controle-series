@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NovaSerieEvent;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\CriadorDeSerie;
@@ -32,28 +33,17 @@ class SeriesController extends Controller
         SeriesFormRequest $request,
         CriadorDeSerie $criadorDeSerie
     ) {
-        $serie = $criadorDeSerie->criarSerie(
-            $request->nome,
-            $request->qtd_temporadas,
-            $request->ep_por_temporada
-        );
+        $requestSerie = [
+            'nome' => $request->nome,
+            'qtd_temporadas' => $request->qtd_temporadas,
+            'ep_por_temporada' => $request->ep_por_temporada
+        ];
 
-        $users = User::all();
-        foreach ($users as $indice => $user) {
-            $multiplicador = $indice + 1;
-            $email = new \App\Mail\NovaSerie(
-                $request->nome,
-                $request->qtd_temporadas,
-                $request->ep_por_temporada
-            );
-            $email->subject = 'Nova Série Adicionada';
-            $quando = now()->addSecond($multiplicador * 10);
-            \Illuminate\Support\Facades\Mail::to($user)->later(
-                $quando,
-                $email
-            );
-            //sleep(5);
-        }
+        $serie = $criadorDeSerie->criarSerie($requestSerie);
+
+        $eventoNovaSerie = new NovaSerieEvent($requestSerie);
+
+        event($eventoNovaSerie);
 
         $request->session()
             ->flash(
