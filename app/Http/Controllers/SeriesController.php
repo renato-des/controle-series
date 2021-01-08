@@ -36,9 +36,11 @@ class SeriesController extends Controller
         $requestSerie = [
             'nome' => $request->nome,
             'qtd_temporadas' => $request->qtd_temporadas,
-            'ep_por_temporada' => $request->ep_por_temporada
+            'ep_por_temporada' => $request->ep_por_temporada,
+            'capa' => $request->capa
         ];
 
+        // dd($request);
         $serie = $criadorDeSerie->criarSerie($requestSerie);
 
         $eventoNovaSerie = new NovaSerieEvent($requestSerie);
