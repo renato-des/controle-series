@@ -37,17 +37,22 @@ class SeriesController extends Controller
             $request->qtd_temporadas,
             $request->ep_por_temporada
         );
+
         $users = User::all();
-
-        foreach ($users as $user) {
-
+        foreach ($users as $indice => $user) {
+            $multiplicador = $indice + 1;
             $email = new \App\Mail\NovaSerie(
                 $request->nome,
                 $request->qtd_temporadas,
                 $request->ep_por_temporada
             );
-            $email->subject('Nova série adicionada ' . $request->nome);
-            Mail::to($user)->send($email);
+            $email->subject = 'Nova Série Adicionada';
+            $quando = now()->addSecond($multiplicador * 10);
+            \Illuminate\Support\Facades\Mail::to($user)->later(
+                $quando,
+                $email
+            );
+            //sleep(5);
         }
 
         $request->session()
