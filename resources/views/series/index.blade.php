@@ -15,15 +15,24 @@ Séries
 <ul class="list-group">
     @foreach($series as $serie)
     <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span id="nome-serie-{{ $serie->id }}">{{ $serie->nome }}</span>
+        <div>
+            {{-- @if (is_null($serie->capa))
+            <img src="{{asset("storage/serie/sem-imagem.jpg")}}" class="img rounded" height="100px" alt="" srcset="">
+            @else --}}
+            <img src="{{$serie->capa_url}}" class="img rounded mr-2" height="100px" width="100px" alt="" srcset="">
+            {{-- @endif --}}
 
-        <div class="input-group w-50" hidden id="input-nome-serie-{{ $serie->id }}">
-            <input type="text" class="form-control" value="{{ $serie->nome }}">
-            <div class="input-group-append">
-                <button class="btn btn-primary" onclick="editarSerie({{ $serie->id }})">
-                    <i class="fas fa-check"></i>
-                </button>
-                @csrf
+
+            <span id="nome-serie-{{ $serie->id }}">{{ $serie->nome }}</span>
+
+            <div class="input-group w-50" hidden id="input-nome-serie-{{ $serie->id }}">
+                <input type="text" class="form-control" value="{{ $serie->nome }}">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" onclick="editarSerie({{ $serie->id }})">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    @csrf
+                </div>
             </div>
         </div>
 
@@ -38,7 +47,7 @@ Séries
             </a>
             @auth
             <form method="post" action="/series/{{ $serie->id }}"
-                  onsubmit="return confirm('Tem certeza que deseja remover {{ addslashes($serie->nome) }}?')">
+                onsubmit="return confirm('Tem certeza que deseja remover {{ addslashes($serie->nome) }}?')">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-danger btn-sm">

@@ -33,14 +33,18 @@ class SeriesController extends Controller
         SeriesFormRequest $request,
         CriadorDeSerie $criadorDeSerie
     ) {
+        if ($request->hasFile('capa')) {
+            $capa = ($request->file('capa')->store('serie'));
+        } else {
+            $capa = null;
+        }
         $requestSerie = [
             'nome' => $request->nome,
             'qtd_temporadas' => $request->qtd_temporadas,
             'ep_por_temporada' => $request->ep_por_temporada,
-            'capa' => $request->capa
+            'capa' => $capa
         ];
 
-        // dd($request);
         $serie = $criadorDeSerie->criarSerie($requestSerie);
 
         $eventoNovaSerie = new NovaSerieEvent($requestSerie);
