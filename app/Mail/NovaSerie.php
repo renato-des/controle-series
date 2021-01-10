@@ -20,11 +20,11 @@ class NovaSerie extends Mailable
      *
      * @return void
      */
-    public function __construct(string $nome, String $qtdTemporadas, String $qtdEpisodios)
+    public function __construct($req_serie = [])
     {
-        $this->nome = $nome;
-        $this->qtdTemporadas = $qtdTemporadas;
-        $this->qtdEpisodios = $qtdEpisodios;
+        $this->nome = $req_serie['nome'];
+        $this->qtdTemporadas = $req_serie['qtd_temporadas'];
+        $this->qtdEpisodios = $req_serie['ep_por_temporada'];
     }
 
     /**

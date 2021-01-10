@@ -1,13 +1,13 @@
 @extends('layout')
 
 @section('cabecalho')
-    Adicionar Série
+Adicionar Série
 @endsection
 
 @section('conteudo')
 @include('erros', ['errors' => $errors])
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     @csrf
     <div class="row">
         <div class="col col-8">
@@ -25,7 +25,29 @@
             <input type="number" class="form-control" name="ep_por_temporada" id="ep_por_temporada">
         </div>
     </div>
+    <div class="row mt-2">
+        <div class="col col-12">
+            <div class="">
+                <input name="capa" type="file" class="form-control" id="" placeholder="Selecione uma capa">
+            </div>
+        </div>
+    </div>
 
     <button class="btn btn-primary mt-2">Adicionar</button>
 </form>
+<script>
+    $("input[type=file]").change(function() {
+            // var fieldVal = $(this).val();
+
+            // // alert(fieldVal);
+            // // // Change the node's value by removing the fake path (Chrome)
+            // // fieldVal = fieldVal.replace("C:\\fakepath\\", "");
+
+            // if (fieldVal != undefined || fieldVal != "") {
+            //     $(this).next(".custom-file-label").attr('data-content', fieldVal);
+            //     $(this).next(".custom-file-label").text(fieldVal);
+            // }
+        });
+
+</script>
 @endsection
